@@ -5,15 +5,19 @@ import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Body = () => {
   const userData = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUser = async () => {
-    if (userData) return;
+    if (userData) {
+      setIsLoading(false);
+      return;
+    }
     try {
       const res = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
@@ -25,12 +29,29 @@ const Body = () => {
         navigate("/login");
       }
       // console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     fetchUser();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center w-full h-screen">
+        <div className="flex justify-between space-x-4 mb-6">
+          <span className="loading loading-ring loading-xs"></span>
+          <span className="loading loading-ring loading-sm"></span>
+          <span className="loading loading-ring loading-md"></span>
+          <span className="loading loading-ring loading-lg"></span>
+          <span className="loading loading-ring loading-xl"></span>
+        </div>
+        <p className="text-lg text-gray-600">Please Wait... Refresh again</p>
+      </div>
+    );
+  }
 
   return (
     <div>
