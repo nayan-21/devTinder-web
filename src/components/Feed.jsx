@@ -28,10 +28,18 @@ const Feed = () => {
     getFeed();
   }, []);
 
+  if (!feed) return;
+  if (feed.length <= 0)
+    return (
+      <p className="p-4 pb-2 text-2xl opacity-70 tracking-wide mb-8 my-6 text-center font-bold">
+        Users not found!
+      </p>
+    );
+
   return (
     feed && (
       <div className="flex justify-center my-12">
-        <UserCard user={feed[1]} />
+        <UserCard user={feed[0]} />
       </div>
     )
   );
