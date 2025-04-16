@@ -8,6 +8,7 @@ import { addUser } from "../utils/userSlice";
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,10 +24,10 @@ const Login = () => {
         { withCredentials: true }
       );
       // console.log(res.data);
-
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (err) {
+      setError(err?.response?.data);
       console.error(err);
     }
   };
@@ -86,11 +87,11 @@ const Login = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-            title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+            // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            // title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
           />
         </label>
-        <p className="validator-hint hidden">
+        {/* <p className="validator-hint hidden">
           Must be more than 8 characters, including
           <br />
           At least one number
@@ -98,8 +99,8 @@ const Login = () => {
           At least one lowercase letter
           <br />
           At least one uppercase letter
-        </p>
-
+        </p> */}
+        <p className="text-red-400 mt-2">{error}</p>
         <div className="card-actions justify-center my-4">
           <button className="btn btn-primary" onClick={handleLogin}>
             LogIn
