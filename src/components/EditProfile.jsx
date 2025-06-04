@@ -6,7 +6,7 @@ import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
 
 const EditProfile = ({ user }) => {
-  const [firstName, setFirstName] = useState(user.firstName );
+  const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName || "");
   const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender || "");
@@ -15,13 +15,11 @@ const EditProfile = ({ user }) => {
   const [error, setError] = useState(" ");
   const dispatch = useDispatch();
   const [showToast, setShowToast] = useState(false);
-//   setShowToast(true);
-//   console.log( BASE_URL + "/profile/edit");
+  //   setShowToast(true);
+  //   console.log( BASE_URL + "/profile/edit");
   const saveProfile = async () => {
     // setError("");
     try {
-       
-        
       const res = await axios.patch(
         "http://localhost:8888/profile/edit",
         {
@@ -33,6 +31,9 @@ const EditProfile = ({ user }) => {
           gender,
         },
         {
+          headers: {
+            "Content-Type": "application/json",
+          },
           withCredentials: true,
         }
       );
